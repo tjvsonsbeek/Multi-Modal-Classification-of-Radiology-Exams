@@ -5,16 +5,16 @@ import pandas as pd
 from skmultilearn.model_selection import iterative_train_test_split
 from skmultilearn.model_selection.measures import get_combination_wise_output_matrix
 
-PATH = "NOTEEVENTS.csv"
-PATH_RADIO = "RADIO_1.csv"
-PATH_RADIO2 = "RADIO_2.csv"
-PATH_RADIO3 = "RADIO_3.csv"
-PATH_RADIO4 = "RADIO_4.csv"
-PATH_RADIO5 = "RADIO_5.csv"
-PATH_RADIO6 = "RADIO_6.csv"
-PATH_RADIO7 = "RADIO_7.csv"
-PATH_ICD = "DIAGNOSES_ICD.csv"
-PATH_ICD2 = "D_ICD_DIAGNOSES.csv"
+PATH = "/home/tvanson/Documents/Datasets/physionet.org/files/mimiciii/1.4/NOTEEVENTS.csv"
+PATH_RADIO = "/home/tvanson/Documents/Datasets/physionet.org/files/mimiciii/1.4/RADIO_1.csv"
+PATH_RADIO2 = "/home/tvanson/Documents/Datasets/physionet.org/files/mimiciii/1.4/RADIO_2.csv"
+PATH_RADIO3 = "/home/tvanson/Documents/Datasets/physionet.org/files/mimiciii/1.4/RADIO_3.csv"
+PATH_RADIO4 = "/home/tvanson/Documents/Datasets/physionet.org/files/mimiciii/1.4/RADIO_4.csv"
+PATH_RADIO5 = "/home/tvanson/Documents/Datasets/physionet.org/files/mimiciii/1.4/RADIO_5.csv"
+PATH_RADIO6 = "/home/tvanson/Documents/Datasets/physionet.org/files/mimiciii/1.4/RADIO_6.csv"
+PATH_RADIO7 = "/home/tvanson/Documents/Datasets/physionet.org/files/mimiciii/1.4/RADIO_7.csv"
+PATH_ICD = "/home/tvanson/Documents/Datasets/physionet.org/files/mimiciii/1.4/DIAGNOSES_ICD.csv"
+PATH_ICD2 = "/home/tvanson/Documents/Datasets/physionet.org/files/mimiciii/1.4/D_ICD_DIAGNOSES.csv"
 ITEMS= {'Enlarged Cardiomediastinum':['1642','1643','1648','1649','1971','2125','5193'],
         'Cardiomegaly':['4293'],
         'Airspace Opacity':['79319'],   #https://www.aapc.com/memberarea/forums/27281-diagnosis-opacity-finding-chest-xray.html
@@ -171,7 +171,7 @@ def stratify():
     dfTotal2[['No Finding', 'Enlarged Cardiomediastinum', 'Cardiomegaly', 'Airspace Opacity',
                  'Lung Lesion', 'Edema', 'Consolidation', 'Pneumonia', 'Atelectasis','Pneumothorax',
                  'Pleural Effusion', 'Pleural Other','Fracture', 'Support Devices']] = y_train
-    dfTotal2.to_csv("train.csv")
+    dfTotal2.to_csv("/home/tvanson/Documents/Datasets/physionet.org/files/mimiciii/1.4/train2.csv")
 
     print("WRITING Test")
 
@@ -182,7 +182,7 @@ def stratify():
     dfTotal2[['No Finding', 'Enlarged Cardiomediastinum', 'Cardiomegaly', 'Airspace Opacity',
                  'Lung Lesion', 'Edema', 'Consolidation', 'Pneumonia', 'Atelectasis','Pneumothorax',
                  'Pleural Effusion', 'Pleural Other','Fracture', 'Support Devices']] = y_test
-    dfTotal2.to_csv("test.csv")
+    dfTotal2.to_csv("/home/tvanson/Documents/Datasets/physionet.org/files/mimiciii/1.4/test.csv")
 
 
 
@@ -199,7 +199,7 @@ def binarize():
 
 
 def stratify_val():
-    df = pd.read_csv("train2.csv", usecols=['TEXT', 'No Finding', 'Enlarged Cardiomediastinum',
+    df = pd.read_csv("/home/tvanson/Documents/Datasets/physionet.org/files/mimiciii/1.4/train2.csv", usecols=['TEXT', 'No Finding', 'Enlarged Cardiomediastinum',
                                            'Cardiomegaly', 'Airspace Opacity', 'Lung Lesion',
                                            'Edema', 'Consolidation', 'Pneumonia', 'Atelectasis',
                                            'Pneumothorax', 'Pleural Effusion', 'Pleural Other',
@@ -236,7 +236,7 @@ def stratify_val():
     dfTotal2[['No Finding', 'Enlarged Cardiomediastinum', 'Cardiomegaly', 'Airspace Opacity',
               'Lung Lesion', 'Edema', 'Consolidation', 'Pneumonia', 'Atelectasis', 'Pneumothorax',
               'Pleural Effusion', 'Pleural Other', 'Fracture', 'Support Devices']] = y_train
-    dfTotal2.to_csv("train.csv")
+    dfTotal2.to_csv("/home/tvanson/Documents/Datasets/physionet.org/files/mimiciii/1.4/train.csv")
 
     print("WRITING Test")
 
@@ -248,14 +248,14 @@ def stratify_val():
     dfTotal2[['No Finding', 'Enlarged Cardiomediastinum', 'Cardiomegaly', 'Airspace Opacity',
               'Lung Lesion', 'Edema', 'Consolidation', 'Pneumonia', 'Atelectasis', 'Pneumothorax',
               'Pleural Effusion', 'Pleural Other', 'Fracture', 'Support Devices']] = y_test
-    dfTotal2.to_csv("val.csv")
+    dfTotal2.to_csv("/home/tvanson/Documents/Datasets/physionet.org/files/mimiciii/1.4/val.csv")
 
 if __name__ == '__main__':
-    step1()
-    step2()
-    step3()
-    group()
-    reorder()
-    binarize()
+    # step1()
+    # step2()
+    # step3()
+    # group()
+    # reorder()
+    # binarize()
     stratify()
     stratify_val()

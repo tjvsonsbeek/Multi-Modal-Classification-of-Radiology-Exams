@@ -4,14 +4,14 @@ from keras_bert import load_trained_model_from_checkpoint, Tokenizer
 import codecs
 from allennlp.modules.elmo import batch_to_ids
 MAXLEN=500
-TRAIN = "../../Datasets/MIMIC-III/train.csv"
-TEST = "../../Datasets/MIMIC-III/test.csv"
-VAL = "../../Datasets/MIMIC-III/val.csv"
+TRAIN = "/home/tvanson/Documents/Datasets/physionet.org/files/mimiciii/1.4/train.csv"
+TEST = "/home/tvanson/Documents/Datasets/physionet.org/files/mimiciii/1.4/test.csv"
+VAL = "/home/tvanson/Documents/Datasets/physionet.org/files/mimiciii/1.4/val.csv"
 
 
 def write(filename,filename2,rows):
-    config_path = "./biobert_v1.1_pubmed/bert_config.json"
-    checkpoint_path = "./biobert_v1.1_pubmed/model.ckpt-1000000"
+    config_path = "/home/tvanson/Documents/Data/biobert_v1.1_pubmed/bert_config.json"
+    checkpoint_path = "/home/tvanson/Documents/Data/biobert_v1.1_pubmed/model.ckpt-1000000"
     bert = load_trained_model_from_checkpoint(config_path, checkpoint_path, training=False,
                                               output_layer_num=4, seq_len=500)
 
@@ -36,7 +36,7 @@ def write(filename,filename2,rows):
 
 
 def prepareTokenizer():
-    dict_path = "./biobert_v1.1_pubmed/vocab.txt"
+    dict_path = "/home/tvanson/Documents/Data/biobert_v1.1_pubmed/vocab.txt"
     token_dict = {}
     with codecs.open(dict_path, 'r', 'utf8') as reader:
         for line in reader:

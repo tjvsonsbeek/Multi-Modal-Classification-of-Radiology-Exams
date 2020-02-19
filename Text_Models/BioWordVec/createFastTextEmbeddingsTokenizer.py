@@ -5,8 +5,8 @@ import pickle
 from keras.preprocessing.text import Tokenizer
 WORD_EMBEDDINGS_SIZE=200
 
-DATATRAIN="train2.csv"
-DATATEST="validate2.csv"
+DATATRAIN="/home/tvanson/Documents/Datasets/physionet.org/files/mimiciii/1.4/train.csv"
+DATATEST="/home/tvanson/Documents/Datasets/physionet.org/files/mimiciii/1.4/val.csv"
 
 
 
@@ -35,8 +35,10 @@ def loadData():
 
 
 if __name__ == '__main__':
-    model = FastText.load_fasttext_format('BioWordVec_PubMed_MIMICIII_d200.vec.bin')
+    # model = FastText.load_fasttext_format('/home/tvanson/Documents/Datasets/physionet.org/files/mimiciii/1.4/BioWordVec_PubMed_MIMICIII_d200.vec.bin')
+    import fasttext
 
+    model = fasttext.load_model('/home/tvanson/Documents/Datasets/physionet.org/files/mimiciii/1.4/BioWordVec_PubMed_MIMICIII_d200.bin')
     x_train, y_train, x_test, y_test = loadData()
     tokenizer = Tokenizer()
     tokenizer.fit_on_texts(x_train)
@@ -53,9 +55,9 @@ if __name__ == '__main__':
     reverse_word_map = dict(map(reversed, tokenizer.word_index.items()))
 
     print("Saving tokenizer")
-    with open('tokenizer.pickle', 'wb') as handle:
+    with open('/home/tvanson/Documents/Datasets/physionet.org/files/mimiciii/1.4/tokenizer.pickle', 'wb') as handle:
         pickle.dump(tokenizer, handle, protocol=pickle.HIGHEST_PROTOCOL)
 
     print("Saving embeddings of corpus")
-    with open('embedding_matrix.pickle', 'wb') as f:
+    with open('/home/tvanson/Documents/Datasets/physionet.org/files/mimiciii/1.4/embedding_matrix.pickle', 'wb') as f:
         pickle.dump(embedding_matrix, f, protocol=pickle.HIGHEST_PROTOCOL)

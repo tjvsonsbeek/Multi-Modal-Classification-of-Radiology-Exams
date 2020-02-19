@@ -50,7 +50,7 @@ def getLabels(doc):
     return value
 
 def labelsprocessing():
-    df = pd.read_csv("dataset.csv")
+    df = pd.read_csv("/home/tvanson/Documents/Datasets/OpenI/dataset.csv")
 
     for idx,x in enumerate(df["Labels"]):
         x = re.sub("","",x)
@@ -64,7 +64,7 @@ def labelsprocessing():
         words = word_tokenize(x)
         words = [word.lower() for word in words]
         df.set_value(idx, "Labels", " ".join(words))
-
+    df.to_csv("/home/tvanson/Documents/Datasets/OpenI/dataset2.csv")
 def getImage(file):
     starts = [match.start() for match in re.finditer(re.escape("<parentImage id="), file)]
     ends = [match.start() for match in re.finditer(re.escape("<figureId>"), file)]
@@ -75,7 +75,7 @@ def getImage(file):
         stringb = ends[idx]
         if val == -1 or stringb == -1:
             continue
-        filename = "./images/" + file[stringa + 17:stringb - 23] + ".png"
+        filename = "/home/tvanson/Documents/Datasets/OpenI/images/" + file[stringa + 17:stringb - 23] + ".png"
         filenames.append(filename)
 
     for filename in filenames:
@@ -87,7 +87,7 @@ def getImage(file):
 def xmlToDF():
     df = pd.DataFrame(columns=["Img","Labels","Report"])
     counter=1
-    for idx, file in enumerate(glob.glob("./ecgen-radiology/*.xml")):
+    for idx, file in enumerate(glob.glob("/home/tvanson/Documents/Datasets/OpenI/reports/ecgen-radiology/*.xml")):
         doc = minidom.parse(file)
         file = doc.toxml()
 
@@ -96,6 +96,7 @@ def xmlToDF():
         img = getImage(file)
 
         if "NO" in img:
+            print("AKERT")
             continue
         df.set_value(idx, "Img", img)
         df.set_value(idx, "Labels", labels)
@@ -104,10 +105,10 @@ def xmlToDF():
         print(counter)
         counter+=1
 
-    df.to_csv("dataset.csv")
+    df.to_csv("/home/tvanson/Documents/Datasets/OpenI/dataset.csv")
 
 def stratify():
-    df = pd.read_csv("dataset4.csv", usecols=['Img','Report', 'No findings', 'Enlarged '
+    df = pd.read_csv("/home/tvanson/Documents/Datasets/OpenI/dataset4.csv", usecols=['Img','Report', 'No findings', 'Enlarged '
                                                                              'Cardiomediastinum',
                                            'Cardiomegaly', 'Airspace Opacity','Lung Lesion',
                                            'Edema', 'Consolidation', 'Pneumonia', 'Atelectasis',
@@ -159,7 +160,7 @@ def stratify():
                  'Lung Lesion', 'Edema', 'Consolidation', 'Pneumonia', 'Atelectasis','Pneumothorax',
                  'Pleural Effusion', 'Pleural Other','Fracture', 'Support Devices']] = y_train
 
-    with open("train.csv", mode='w', newline='\n') as f:
+    with open("/home/tvanson/Documents/Datasets/OpenI/train.csv", mode='w', newline='\n') as f:
         dfTotal2.to_csv(f, sep=",", float_format='%.2f', index=False, line_terminator='\n',
                     encoding='utf-8')
 
@@ -174,13 +175,13 @@ def stratify():
     dfTotal2[['No findings', 'Enlarged Cardiomediastinum', 'Cardiomegaly', 'Airspace Opacity',
                  'Lung Lesion', 'Edema', 'Consolidation', 'Pneumonia', 'Atelectasis','Pneumothorax',
                  'Pleural Effusion', 'Pleural Other','Fracture', 'Support Devices']] = y_test
-    dfTotal2.to_csv("test.csv")
-    with open("test.csv", mode='w', newline='\n') as f:
+    dfTotal2.to_csv("/home/tvanson/Documents/Datasets/OpenI/test.csv")
+    with open("/home/tvanson/Documents/Datasets/OpenI/test.csv", mode='w', newline='\n') as f:
         dfTotal2.to_csv(f, sep=",", float_format='%.2f', index=False, line_terminator='\n',
                     encoding='utf-8')
 
 def labels():
-    df = pd.read_csv("dataset2.csv")
+    df = pd.read_csv("/home/tvanson/Documents/Datasets/OpenI/dataset2.csv")
     ITEMS = {'No findings':['normal'],
              'Enlarged Cardiomediastinum': ['enlarged mediastinum'],
              'Cardiomegaly': ['cardiomegaly'],
@@ -208,10 +209,10 @@ def labels():
                 df.loc[idx,label] = 1
             else:
                 df.loc[df['Labels'].str.contains(code), label] = 1
-    df.to_csv("dataset3.csv")
+    df.to_csv("/home/tvanson/Documents/Datasets/OpenI/dataset3.csv")
 
 def checkNoFinding():
-    df = pd.read_csv('dataset3.csv',
+    df = pd.read_csv('/home/tvanson/Documents/Datasets/OpenI/dataset3.csv',
                      usecols=['Img','Report', 'No findings', 'Enlarged Cardiomediastinum',
                               'Cardiomegaly', 'Airspace Opacity',
                               'Lung Lesion', 'Edema', 'Consolidation', 'Pneumonia',
@@ -219,7 +220,7 @@ def checkNoFinding():
                               'Pneumothorax', 'Pleural Effusion', 'Pleural Other', 'Fracture',
                               'Support Devices'])
 
-    df2 = pd.read_csv('dataset3.csv',
+    df2 = pd.read_csv('/home/tvanson/Documents/Datasets/OpenI/dataset3.csv',
                       usecols=['No findings', 'Enlarged Cardiomediastinum', 'Cardiomegaly',
                                'Airspace Opacity',
                                'Lung Lesion', 'Edema', 'Consolidation', 'Pneumonia',
@@ -232,7 +233,7 @@ def checkNoFinding():
             print("changed index:" + str(idx))
             df.loc[idx, 'No findings'] = 1
 
-    df.to_csv('dataset4.csv')
+    df.to_csv('/home/tvanson/Documents/Datasets/OpenI/dataset4.csv')
 
 
 

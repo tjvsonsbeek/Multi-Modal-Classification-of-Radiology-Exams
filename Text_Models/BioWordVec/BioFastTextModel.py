@@ -20,9 +20,9 @@ MAX_WORDS_TEXT=500
 WORD_EMBEDDINGS_SIZE=200
 EPOCHS = 30
 BATCH_SIZE = 2
-TRAIN="../../Datasets/MIMIC-III/train.csv"
-TEST="../../Datasets/MIMIC-III/test.csv"
-VAL="../../Datasets/MIMIC-III/val.csv"
+TRAIN="/home/tvanson/Documents/Datasets/physionet.org/files/mimiciii/1.4/train.csv"
+TEST="/home/tvanson/Documents/Datasets/physionet.org/files/mimiciii/1.4/test.csv"
+VAL="/home/tvanson/Documents/Datasets/physionet.org/files/mimiciii/1.4/val.csv"
 
 def auc_roc(y_true, y_pred):
     # any tensorflow metric
@@ -58,20 +58,21 @@ class Pentanh(Layer):
 
 
 def loadData():
-    testdf = pd.read_csv("validate.csv")
-    x_train = testdf["Report"].values
-    y_train = testdf[['No findings','Enlarged Cardiomediastinum','Cardiomegaly','Airspace Opacity',
+    testdf = pd.read_csv("/home/tvanson/Documents/Datasets/physionet.org/files/mimiciii/1.4/train.csv")
+    print(testdf.columns.tolist())
+    x_train = testdf["TEXT"].values
+    y_train = testdf[['No Finding','Enlarged Cardiomediastinum','Cardiomegaly','Airspace Opacity',
         'Lung Lesion','Edema','Consolidation','Pneumonia','Atelectasis','Pneumothorax','Pleural Effusion',
         'Pleural Other','Fracture','Support Devices']].values
 
-    testdf = pd.read_csv("validate.csv")
-    x_val = testdf["Report"].values
-    y_val = testdf[['No findings','Enlarged Cardiomediastinum','Cardiomegaly','Airspace Opacity',
+    testdf = pd.read_csv("/home/tvanson/Documents/Datasets/physionet.org/files/mimiciii/1.4/val.csv")
+    x_val = testdf["TEXT"].values
+    y_val = testdf[['No Finding','Enlarged Cardiomediastinum','Cardiomegaly','Airspace Opacity',
         'Lung Lesion','Edema','Consolidation','Pneumonia','Atelectasis','Pneumothorax','Pleural Effusion',
         'Pleural Other','Fracture','Support Devices']].values
-    testdf = pd.read_csv("validate.csv")
-    x_test= testdf["Report"].values
-    y_test = testdf[['No findings','Enlarged Cardiomediastinum','Cardiomegaly','Airspace Opacity',
+    testdf = pd.read_csv("/home/tvanson/Documents/Datasets/physionet.org/files/mimiciii/1.4/test.csv")
+    x_test= testdf["TEXT"].values
+    y_test = testdf[['No Finding','Enlarged Cardiomediastinum','Cardiomegaly','Airspace Opacity',
         'Lung Lesion','Edema','Consolidation','Pneumonia','Atelectasis','Pneumothorax','Pleural Effusion',
         'Pleural Other','Fracture','Support Devices']].values
 
@@ -126,11 +127,11 @@ def prepare_embeddings(t,vocab_size,model):
 
 def getTokenEmbed():
     print("Load tokenizer")
-    with open('tokenizer.pickle', 'rb') as handle:
+    with open('/home/tvanson/Documents/Datasets/physionet.org/files/mimiciii/1.4/tokenizer.pickle', 'rb') as handle:
         tokenizer = pickle.load(handle)
 
     print("Load embedding_matrix")
-    with open('embedding_matrix.pickle', 'rb') as f:
+    with open('/home/tvanson/Documents/Datasets/physionet.org/files/mimiciii/1.4/embedding_matrix.pickle', 'rb') as f:
         embedding_matrix = pickle.load(f)
 
     voc_size = len(tokenizer.word_index) + 1
@@ -175,12 +176,12 @@ if __name__ == '__main__':
     x_train, y_train, x_val, y_val, x_test, y_test = loadData()
     print('Loading Tokenizer, Embedding...')
     tokenizer, embedding_matrix, voc_size = getTokenEmbed()
-    print('Preprocessing Texts...')
-    x_train,x_val,x_test = preprocessTexts(x_train,x_val,x_test,tokenizer)
+    # print('Preprocessing Texts...')
+    # x_train,x_val,x_test = preprocessTexts(x_train,x_val,x_test,tokenizer)
 
 
     print("Preparing model")
     model = getModel(voc_size,embedding_matrix)
     #model.load_weights("./weights-improvement-TEXT-09-0.13.hdf5")
-    train(model,x_train, y_train, x_val, y_val,x_test, y_test)
-    makePredictions(model,x_test, y_test)
+    # train(model,x_train, y_train, x_val, y_val,x_test, y_test)
+    # makePredictions(model,x_test, y_test)
